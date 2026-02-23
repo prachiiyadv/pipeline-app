@@ -11,7 +11,9 @@ pipeline {
         stage('Clone Repo') {
             steps {
                 // Pull code from GitHub
-                git 'https://github.com/prachiiyadv/pipeline-app.git'
+                // Replace 'main' with your branch name if different
+                git branch: 'main', url: 'https://github.com/prachiiyadv/pipeline-app.git'
+                // If repo is private, add: credentialsId: 'your-credential-id'
             }
         }
 
