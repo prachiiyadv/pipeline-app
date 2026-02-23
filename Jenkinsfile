@@ -31,3 +31,23 @@ pipeline {
             }
         }
 
+        stage('Run Container') {
+            steps {
+                bat """
+                    docker run -d -p 5000:5000 --name %CONTAINER_NAME% %DOCKER_IMAGE%
+                """
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Check logs.'
+        }
+    }
+}
+
