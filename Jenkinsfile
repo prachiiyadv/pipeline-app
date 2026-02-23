@@ -9,18 +9,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                bat 'docker build -t %IMAGE_NAME% .'
             }
         }
 
         stage('Run Container') {
             steps {
-                sh '''
-                docker stop pipeline-container || true
-                docker rm pipeline-container || true
-                docker run -d -p 3000:3000 --name pipeline-container $IMAGE_NAME
-                '''
-            }
-        }
-    }
-}
+                bat '''
+                docker stop pipeline-container || exit 0
+                docker rm pipeline-container || exit 0
+                docker run -d -p 3000:3000 --name pipeline-container %IMAGE_NAME%
