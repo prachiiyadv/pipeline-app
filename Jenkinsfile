@@ -25,7 +25,10 @@ pipeline {
         stage('Trivy Scan') {
             steps {
                 bat """
+                    echo Scanning Docker image for vulnerabilities...
                     trivy image --exit-code 1 --severity HIGH,CRITICAL %DOCKER_IMAGE%
+                    trivy image -f template --template "@contrib/html.tpl" -o trivy-report.html %DOCKER_IMAGE%
+                    echo Trivy scan completed.
                 """
             }
         }
@@ -51,10 +54,10 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Pipeline completed successfully! Docker image built, scanned, and deployed.'
         }
         failure {
-            echo 'Pipeline failed. Check logs.'
+            echo 'Pipeline failed. Check logs and Trivy report.'
         }
     }
 }
