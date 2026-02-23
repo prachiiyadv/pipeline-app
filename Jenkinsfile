@@ -22,6 +22,14 @@ pipeline {
             }
         }
 
+        stage('Trivy Scan') {
+            steps {
+                bat """
+                    trivy image --exit-code 1 --severity HIGH,CRITICAL %DOCKER_IMAGE%
+                """
+            }
+        }
+
         stage('Stop Existing Container') {
             steps {
                 bat """
@@ -50,4 +58,3 @@ pipeline {
         }
     }
 }
-
